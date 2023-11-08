@@ -40,7 +40,7 @@ jobs:
           DOCKER_CLI_ACI: 1
   deploy:    
     needs: build-analyze-scan  
-    runs-on:  sonarqube
+    runs-on:  [netflix-githubactions]
     steps:
       - name: Pull the docker image
         run: docker pull krisforu/netflixgithubactions:latest
