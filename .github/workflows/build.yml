@@ -7,7 +7,7 @@ on:
 
 
 jobs:
-  build:
+  build-analyze-scan:
     name: Build
     runs-on: ubuntu-latest
     steps:
@@ -38,4 +38,15 @@ jobs:
           docker push krisforu/netflixgithubactions:latest  
         env:
           DOCKER_CLI_ACI: 1
+  deploy:    
+    needs: build-analyze-scan  
+    runs-on:  netflix-githubactions
+    steps:
+      - name: Pull the docker image
+        run: docker pull krisforu/netflixgithubactions:latest
+      - name: Trivy image scan
+        run: trivy image krisforu/netflixgithubactions:latest
+      - name: Run the container netflix
+        run: docker run -d --name netflix -p 8099:80 krisforu/netflixgithubactions:latest
+
 
